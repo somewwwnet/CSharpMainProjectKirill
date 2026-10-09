@@ -45,11 +45,26 @@ namespace UnitBrains.Player
             // Homework 1.4 (1st block, 4rd module)
             ///////////////////////////////////////
             List<Vector2Int> result = GetReachableTargets();
-            while (result.Count > 1)
+            float minDistance = float.MaxValue; // Фиксируем максимальное расстояние
+            Vector2Int? closestTarget = null; // Объявляем пустой вектор
+            
+            foreach (var target in result) // Прозодимся по списку векторов доступных целей
             {
-                result.RemoveAt(result.Count - 1);
+                var currentEnemyDistance = DistanceToOwnBase(target); // Получаем расстояние доступной цели до нашей базы
+                if (minDistance > currentEnemyDistance)
+                {
+                    minDistance = currentEnemyDistance;
+                    closestTarget = target;
+                }
             }
-            return result;
+            result.Clear(); // чистим лист от всех значений
+
+            if (closestTarget.HasValue) // Если значение в векторе closestTraget?
+            {
+                result.Add(closestTarget.Value); // Если значение имеется, то добавляем его в лист целей
+            }
+            return result; //Возвращаем цель
+
             ///////////////////////////////////////
         }
 
